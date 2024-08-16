@@ -1,5 +1,4 @@
 import pygame
-import neat
 import time 
 import os 
 import random
@@ -14,6 +13,8 @@ BASE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\
 BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\Floppy_bird\\imgs","bg.png")))
 
 Points = pygame.font.SysFont("comicsans", 40)
+MENU_FONT = pygame.font.SysFont("comicsans", 70)
+max_score=0
 
 class Bird:
     imgs = BIRD_IMGS
@@ -116,7 +117,7 @@ class Pipe:
         bottom_offset = (self.x - bird.x, self.bottom - round(bird.y))
 
         b_point = bird_mask.overlap(bottom_mask, bottom_offset)
-        t_point = b_point = bird_mask.overlap(top_mask, top_offset)
+        t_point = bird_mask.overlap(top_mask, top_offset)
 
         if t_point or b_point:
             return True
@@ -147,17 +148,56 @@ class Base:
         win.blit(self.IMG, (self.x1,self.y))
         win.blit(self.IMG, (self.x2,self.y))
 
-def draw_window(win, bird, pipes, base, score):
+def draw_window(win, bird, pipes, base, score, max_score):
     win.blit(BG_IMG, (0,0))
     for pipe in pipes:
         pipe.draw(win)
 
-    text = Points.render("Score: "+str(score),1,(255,255,255))
-    win.blit(text,(WIN_WIDTH - 10 - text.get_width(),10))
+    point = Points.render("Score: "+str(score),1,(255,255,255))
+    max_point = Points.render("Best: "+str(max_score),1,(255,255,255))
+    win.blit(point,(WIN_WIDTH - 10 - point.get_width(),10))
+    win.blit(max_point,(10 ,10))
     base.draw(win)
     bird.draw(win)
     pygame.display.update()
     
+def draw_menu(win,max_score):
+    win.blit(BG_IMG, (0,0))
+    
+    play_button = MENU_FONT.render("Play", 1, (255,255,255))
+    exit_button = MENU_FONT.render("Exit", 1, (255,255,255))
+    
+    play_rect = play_button.get_rect(center=(WIN_WIDTH/2, WIN_HEIGHT/2 - 100))
+    exit_rect = exit_button.get_rect(center=(WIN_WIDTH/2, WIN_HEIGHT/2 + 100))
+
+    win.blit(play_button, play_rect)
+    win.blit(exit_button, exit_rect)
+
+    max_point = Points.render("Best: "+str(max_score),1,(255,255,255))
+    win.blit(max_point,(10 ,10))
+    pygame.display.update()
+
+    return play_rect, exit_rect
+
+def main_menu():
+    win = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
+    run=True
+    global max_score
+    while run:
+        play_rect, exit_rect =draw_menu(win, max_score)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.quit()
+                quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mx, my = pygame.mouse.get_pos()
+                if play_rect.collidepoint(mx, my):
+                    main()
+
+                if exit_rect.collidepoint(mx, my):
+                    pygame.quit()
+                    quit()
 
 def main():
     bird= Bird(200,300) #230,300
@@ -166,6 +206,7 @@ def main():
     win = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
     clock = pygame.time.Clock()
     score=0
+    global max_score
     run=True
     while run:
         clock.tick(30)
@@ -173,12 +214,16 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
-        #bird.move()
+            if event.type == pygame.KEYDOWN:
+                if (event.key == pygame.K_UP) or (event.key == pygame.K_w) or  (event.key == pygame.K_SPACE) :
+                    bird.jump()
+                
+        bird.move()
         add_pipe = False
         rem = []
         for pipe in pipes:
             if pipe.colldie(bird):
-                pass
+                run = False
             if pipe.x + pipe.pipe_top.get_width()<0:
                 rem.append(pipe)
             if not pipe.passed and pipe.x<bird.x:
@@ -193,10 +238,14 @@ def main():
         for r in rem:
             pipes.remove(r)
 
+        if bird.y + bird.img.get_height() >=730:
+            run = False
         base.move()
-        draw_window(win,bird,pipes, base,score)
+        draw_window(win,bird,pipes, base,score,max_score)
+        
+        if score>max_score:
+            max_score=score
 
-    pygame.quit()
-    quit()
+    main_menu()
 
-main()
+main_menu()
