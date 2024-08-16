@@ -7,10 +7,10 @@ pygame.font.init()
 WIN_WIDTH = 550
 WIN_HEIGHT = 800
 
-BIRD_IMGS = [pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\Floppy_bird\\imgs","bird1.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\Floppy_bird\\imgs","bird2.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\Floppy_bird\\imgs","bird3.png")))]
-PIPE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\Floppy_bird\\imgs","pipe.png")))
-BASE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\Floppy_bird\\imgs","base.png")))
-BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\Floppy_bird\\imgs","bg.png")))
+BIRD_IMGS = [pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\Flappy_bird\\imgs","bird1.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\Flappy_bird\\imgs","bird2.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\Flappy_bird\\imgs","bird3.png")))]
+PIPE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\Flappy_bird\\imgs","pipe.png")))
+BASE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\Flappy_bird\\imgs","base.png")))
+BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("D:\\Github\\Flappy_bird\\imgs","bg.png")))
 
 Points = pygame.font.SysFont("comicsans", 40)
 MENU_FONT = pygame.font.SysFont("comicsans", 70)
