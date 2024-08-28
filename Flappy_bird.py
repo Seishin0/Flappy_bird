@@ -7,8 +7,6 @@ pygame.font.init()
 WIN_WIDTH = 550
 WIN_HEIGHT = 800
 
-BIRD_IMGS = [pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3.png")))]
-
 SKINS = {
     "Default":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3.png")))],
     "Black":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1black.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2black.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3black.png")))] ,
@@ -19,19 +17,21 @@ SKINS = {
     "Purple":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1purple.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2purple.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3purple.png")))] ,
     "Red":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1red.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2red.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3red.png")))] ,
 }
-current_skin = BIRD_IMGS
+current_skin = SKINS.get("Default")
 
 PIPE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","pipe.png")))
 BASE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","base.png")))
 BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bg.png")))
-
+GOLD_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","Gold.png")))
+SCORE_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","Score.png")))
+MAXSCORE_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bestScore.png")))
 Points = pygame.font.SysFont("Consolas", 40)
 MENU_FONT = pygame.font.SysFont("Consolas", 70)
 max_score=0
+gold=0
 frame_count=0
 
 class Bird:
-    imgs = BIRD_IMGS
     max_rotation = 25
     rot_vel=20
     animation_time = 5 
@@ -39,13 +39,14 @@ class Bird:
     def __init__(self,x,y,skin):
         self.x = x
         self.y = y
+        self.imgs=skin
         self.tilt = 0
         self.tick_count=0
         self.vel=0
         self.height=self.y
         self.img_count = 0
         self.img = self.imgs[0]
-        self.imgs=skin
+        
     
     def jump(self):
         self.vel = -10
@@ -189,20 +190,27 @@ def skin_menu(win):
 
     return skin_rects
 
-def draw_window(win, bird, pipes, base, score, max_score):
+def draw_window(win, bird, pipes, base, score, max_score,  gold):
     win.blit(BG_IMG, (0,0))
     for pipe in pipes:
         pipe.draw(win)
 
-    point = Points.render("Score: "+str(score),1,(255,255,255))
-    max_point = Points.render("Best: "+str(max_score),1,(255,255,255))
-    win.blit(point,(WIN_WIDTH - 10 - point.get_width(),10))
-    win.blit(max_point,(10 ,10))
+    win.blit(SCORE_IMG,(WIN_WIDTH-SCORE_IMG.get_width()-10,10))
+    point = Points.render(str(score),1,(2,2,2))
+    win.blit(point,(WIN_WIDTH - 22 - point.get_width(),24))
+
+    win.blit(MAXSCORE_IMG,(10,10))
+    max_point = Points.render(str(max_score),1,(255,255,255))
+    win.blit(max_point,(70 ,20))
+    win.blit(GOLD_IMG,(10,65))
+    gold_text = Points.render(str(gold),1,(255,255,255))
+    win.blit(gold_text,(70 ,70))
+
     base.draw(win)
     bird.draw(win)
     pygame.display.update()
     
-def draw_menu(win,max_score,frame_count, current_skin):
+def draw_menu(win,max_score,frame_count, current_skin, gold):
     win.blit(BG_IMG, (0,0))
     
     play_button = MENU_FONT.render("Play", 1, (255,255,255))
@@ -221,8 +229,13 @@ def draw_menu(win,max_score,frame_count, current_skin):
     skin_text_rect = skin_text.get_rect(midtop=skin_rect.midbottom)
     win.blit(skin_text, skin_text_rect)
 
-    max_point = Points.render("Best:"+str(max_score),1,(255,255,255))
-    win.blit(max_point,(20 ,20))
+    win.blit(MAXSCORE_IMG,(10,10))
+    max_point = Points.render(str(max_score),1,(255,255,255))
+    win.blit(max_point,(70 ,20))
+
+    win.blit(GOLD_IMG,(10,65))
+    gold_text = Points.render(str(gold),1,(255,255,255))
+    win.blit(gold_text,(70 ,70))
     pygame.display.update()
 
     return play_rect, exit_rect, skin_rect
@@ -233,13 +246,14 @@ def main_menu(current_skin):
     in_skin_menu= False
     global max_score
     global frame_count
+    global gold
     while run:
         
         frame_count+=1
         if in_skin_menu:
             skin_rects= skin_menu(win)
         else:
-            play_rect, exit_rect, skin_rect =draw_menu(win, max_score,frame_count, current_skin)    
+            play_rect, exit_rect, skin_rect =draw_menu(win, max_score,frame_count, current_skin, gold)    
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -271,6 +285,7 @@ def main(current_skin):
     clock = pygame.time.Clock()
     score=0
     global max_score
+    global gold
     run=True
     while run:
         clock.tick(30)
@@ -298,14 +313,18 @@ def main(current_skin):
 
         if add_pipe:
             score+=1
-            pipes.append(Pipe(700))
+            gold+=1
+            if score<=70:
+                pipes.append(Pipe(700-(2*score)))
+            else:
+                pipes.append(Pipe(560))
         for r in rem:
             pipes.remove(r)
 
         if bird.y + bird.img.get_height() >=730 or bird.y <0:
             run = False
         base.move()
-        draw_window(win,bird,pipes, base,score,max_score)
+        draw_window(win,bird,pipes, base,score,max_score,gold)
         
         if score>max_score:
             max_score=score
