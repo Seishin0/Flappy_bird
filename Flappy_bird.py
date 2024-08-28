@@ -8,13 +8,27 @@ WIN_WIDTH = 550
 WIN_HEIGHT = 800
 
 BIRD_IMGS = [pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3.png")))]
+
+SKINS = {
+    "Default":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3.png")))],
+    "Black":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1black.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2black.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3black.png")))] ,
+    "Blue":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1blue.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2blue.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3blue.png")))] ,
+    "Green":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1green.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2green.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3green.png")))] ,
+    "Orange":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1orange.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2orange.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3orange.png")))] ,
+    "Pink":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1pink.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2pink.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3pink.png")))] ,
+    "Purple":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1purple.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2purple.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3purple.png")))] ,
+    "Red":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1red.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2red.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3red.png")))] ,
+}
+current_skin = BIRD_IMGS
+
 PIPE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","pipe.png")))
 BASE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","base.png")))
 BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bg.png")))
 
-Points = pygame.font.SysFont("comicsans", 40)
-MENU_FONT = pygame.font.SysFont("comicsans", 70)
+Points = pygame.font.SysFont("Consolas", 40)
+MENU_FONT = pygame.font.SysFont("Consolas", 70)
 max_score=0
+frame_count=0
 
 class Bird:
     imgs = BIRD_IMGS
@@ -22,7 +36,7 @@ class Bird:
     rot_vel=20
     animation_time = 5 
     
-    def __init__(self,x,y):
+    def __init__(self,x,y,skin):
         self.x = x
         self.y = y
         self.tilt = 0
@@ -31,6 +45,7 @@ class Bird:
         self.height=self.y
         self.img_count = 0
         self.img = self.imgs[0]
+        self.imgs=skin
     
     def jump(self):
         self.vel = -10
@@ -148,6 +163,32 @@ class Base:
         win.blit(self.IMG, (self.x1,self.y))
         win.blit(self.IMG, (self.x2,self.y))
 
+
+def skin_menu(win):
+    win.blit(BG_IMG, (0,0))
+    y_offset = 100
+    count=0
+    skin_rects={}
+    for skin_name, skin_imgs in SKINS.items():
+        skin_button = skin_imgs[0]
+        if count % 2 ==0:
+            skin_rect = skin_button.get_rect(center=(WIN_WIDTH/4, y_offset))
+        else:
+            skin_rect = skin_button.get_rect(center=(3*WIN_WIDTH/4, y_offset))
+        win.blit(skin_button, skin_rect)
+
+        skin_text = Points.render(skin_name, 1, (255,255,255))
+        skin_text_rect = skin_text.get_rect(midtop=skin_rect.midbottom)
+        win.blit(skin_text, skin_text_rect)
+
+        skin_rects[skin_name] = skin_rect
+        if count % 2 == 1:
+            y_offset +=150
+        count+=1
+    pygame.display.update()
+
+    return skin_rects
+
 def draw_window(win, bird, pipes, base, score, max_score):
     win.blit(BG_IMG, (0,0))
     for pipe in pipes:
@@ -161,46 +202,69 @@ def draw_window(win, bird, pipes, base, score, max_score):
     bird.draw(win)
     pygame.display.update()
     
-def draw_menu(win,max_score):
+def draw_menu(win,max_score,frame_count, current_skin):
     win.blit(BG_IMG, (0,0))
     
     play_button = MENU_FONT.render("Play", 1, (255,255,255))
     exit_button = MENU_FONT.render("Exit", 1, (255,255,255))
-    
+    skin_button = current_skin[frame_count // 10 % len(current_skin)]
+
     play_rect = play_button.get_rect(center=(WIN_WIDTH/2, WIN_HEIGHT/2 - 100))
     exit_rect = exit_button.get_rect(center=(WIN_WIDTH/2, WIN_HEIGHT/2 + 100))
+    skin_rect = skin_button.get_rect(topright=(WIN_WIDTH - 30, 30))
 
     win.blit(play_button, play_rect)
     win.blit(exit_button, exit_rect)
+    win.blit(skin_button, skin_rect)
 
-    max_point = Points.render("Best: "+str(max_score),1,(255,255,255))
-    win.blit(max_point,(10 ,10))
+    skin_text = Points.render("Skins", 1, (255, 255, 255))
+    skin_text_rect = skin_text.get_rect(midtop=skin_rect.midbottom)
+    win.blit(skin_text, skin_text_rect)
+
+    max_point = Points.render("Best:"+str(max_score),1,(255,255,255))
+    win.blit(max_point,(20 ,20))
     pygame.display.update()
 
-    return play_rect, exit_rect
+    return play_rect, exit_rect, skin_rect
 
-def main_menu():
+def main_menu(current_skin):
     win = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
     run=True
+    in_skin_menu= False
     global max_score
+    global frame_count
     while run:
-        play_rect, exit_rect =draw_menu(win, max_score)
+        
+        frame_count+=1
+        if in_skin_menu:
+            skin_rects= skin_menu(win)
+        else:
+            play_rect, exit_rect, skin_rect =draw_menu(win, max_score,frame_count, current_skin)    
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
                 quit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mx, my = pygame.mouse.get_pos()
-                if play_rect.collidepoint(mx, my):
-                    main()
+                if in_skin_menu:
+                    if in_skin_menu:
+                        for skin_name, rect in skin_rects.items():
+                            if rect.collidepoint(mx, my):
+                                current_skin = SKINS[skin_name]
+                                in_skin_menu = False 
+                else:  
+                    if skin_rect.collidepoint(mx, my):
+                        in_skin_menu=True
+                    if play_rect.collidepoint(mx, my):
+                        main(current_skin)
 
-                if exit_rect.collidepoint(mx, my):
-                    pygame.quit()
-                    quit()
+                    if exit_rect.collidepoint(mx, my):
+                        pygame.quit()
+                        quit()
 
-def main():
-    bird= Bird(200,300) #230,300
+def main(current_skin):
+    bird= Bird(200,300,current_skin) #230,300
     base= Base(730)
     pipes=[Pipe(700)]
     win = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
@@ -246,6 +310,10 @@ def main():
         if score>max_score:
             max_score=score
 
-    main_menu()
+    main_menu(current_skin)
 
-main_menu()
+main_menu(current_skin)
+
+
+
+
