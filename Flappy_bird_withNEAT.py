@@ -15,8 +15,8 @@ PIPE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\
 BASE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","base.png")))
 BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bg.png")))
 
-Points = pygame.font.SysFont("comicsans", 40)
-MENU_FONT = pygame.font.SysFont("comicsans", 70)
+Points = pygame.font.SysFont("Consolas", 40)
+MENU_FONT = pygame.font.SysFont("Consolas", 70)
 generation = 0
 
 class Bird:
