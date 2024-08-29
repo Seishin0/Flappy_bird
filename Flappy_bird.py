@@ -1,5 +1,5 @@
 import pygame
-import time 
+import json
 import os 
 import random
 pygame.font.init()
@@ -27,9 +27,34 @@ SCORE_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\
 MAXSCORE_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bestScore.png")))
 Points = pygame.font.SysFont("Consolas", 40)
 MENU_FONT = pygame.font.SysFont("Consolas", 70)
-max_score=0
-gold=0
 frame_count=0
+
+def get_skin_name(current_skin):
+    for skin_name, skin_imgs in SKINS.items():
+        if skin_imgs == current_skin:
+            return skin_name
+    return "Default" #If found none
+
+def save(max_score , gold, skin, filename="Flappy_bird\\Data.json"):
+    skin_name=get_skin_name(skin)
+    data = {
+        "max_score": max_score,
+        "gold":gold,
+        "skin":skin_name
+    }
+    with open(filename, 'w') as file:
+        json.dump(data, file)
+
+def load(filename="Flappy_bird\\Data.json"):
+    try:
+        with open(filename, 'r') as file:
+            data=json.load(file)
+            return data["max_score"],data["gold"],data["skin"]
+    except:
+        return 0,0,"Default"
+
+max_score, gold, current_skin_name = load()
+current_skin=SKINS.get(current_skin_name)
 
 class Bird:
     max_rotation = 25
@@ -165,6 +190,7 @@ class Base:
         win.blit(self.IMG, (self.x2,self.y))
 
 
+
 def skin_menu(win):
     win.blit(BG_IMG, (0,0))
     y_offset = 100
@@ -256,6 +282,7 @@ def main_menu(current_skin):
             play_rect, exit_rect, skin_rect =draw_menu(win, max_score,frame_count, current_skin, gold)    
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                save(max_score,gold,current_skin)
                 run = False
                 pygame.quit()
                 quit()
@@ -274,6 +301,7 @@ def main_menu(current_skin):
                         main(current_skin)
 
                     if exit_rect.collidepoint(mx, my):
+                        save(max_score,gold,current_skin)
                         pygame.quit()
                         quit()
 
@@ -291,6 +319,7 @@ def main(current_skin):
         clock.tick(30)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                save(max_score , gold,current_skin)
                 run = False
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
