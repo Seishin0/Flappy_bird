@@ -17,7 +17,27 @@ SKINS = {
     "Purple":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1purple.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2purple.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3purple.png")))] ,
     "Red":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird1red.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird2red.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bird3red.png")))] ,
 }
-current_skin = SKINS.get("Default")
+PRICE = {
+    "Default":0,
+    "Black":500,
+    "Blue":500,
+    "Green":500,
+    "Orange":500,
+    "Pink":500,
+    "Purple":500,
+    "Red":500,
+}
+OWNED = {
+    "Default":True,
+    "Black":False,
+    "Blue":False,
+    "Green":False,
+    "Orange":False,
+    "Pink":False,
+    "Purple":False,
+    "Red":False,
+}
+
 
 PIPE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","pipe.png")))
 BASE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","base.png")))
@@ -37,10 +57,12 @@ def get_skin_name(current_skin):
 
 def save(max_score , gold, skin, filename="Flappy_bird\\Data.json"):
     skin_name=get_skin_name(skin)
+    owned_skins = list(OWNED.values())
     data = {
         "max_score": max_score,
         "gold":gold,
-        "skin":skin_name
+        "skin":skin_name,
+        "skins_owned":owned_skins
     }
     with open(filename, 'w') as file:
         json.dump(data, file)
@@ -49,12 +71,13 @@ def load(filename="Flappy_bird\\Data.json"):
     try:
         with open(filename, 'r') as file:
             data=json.load(file)
-            return data["max_score"],data["gold"],data["skin"]
+            return data["max_score"],data["gold"],data["skin"],data["skins_owned"]
     except:
-        return 0,0,"Default"
+        return 0,0,"Default",[True,False,False,False,False,False,False,False]
 
-max_score, gold, current_skin_name = load()
+max_score, gold, current_skin_name, owned_skins = load()
 current_skin=SKINS.get(current_skin_name)
+OWNED=dict(zip(OWNED.keys(),owned_skins))
 
 class Bird:
     max_rotation = 25
@@ -191,20 +214,27 @@ class Base:
 
 
 
-def skin_menu(win):
+def skin_menu(win,gold):
     win.blit(BG_IMG, (0,0))
     y_offset = 100
     count=0
+    win.blit(GOLD_IMG,(10,10))
+    gold_text = Points.render(str(gold),1,(255,255,255))
+    win.blit(gold_text,(70 ,15))
     skin_rects={}
     for skin_name, skin_imgs in SKINS.items():
-        skin_button = skin_imgs[0]
+        if OWNED.get(skin_name):
+            skin_button = skin_imgs[0]
+            skin_text = Points.render(skin_name, 1, (255,255,255))
+        else:
+            skin_button = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","Locked.png")))
+            skin_text = Points.render(str(PRICE.get(skin_name)), 1, (255,255,255))
         if count % 2 ==0:
             skin_rect = skin_button.get_rect(center=(WIN_WIDTH/4, y_offset))
         else:
             skin_rect = skin_button.get_rect(center=(3*WIN_WIDTH/4, y_offset))
         win.blit(skin_button, skin_rect)
-
-        skin_text = Points.render(skin_name, 1, (255,255,255))
+    
         skin_text_rect = skin_text.get_rect(midtop=skin_rect.midbottom)
         win.blit(skin_text, skin_text_rect)
 
@@ -277,7 +307,7 @@ def main_menu(current_skin):
         
         frame_count+=1
         if in_skin_menu:
-            skin_rects= skin_menu(win)
+            skin_rects= skin_menu(win,gold)
         else:
             play_rect, exit_rect, skin_rect =draw_menu(win, max_score,frame_count, current_skin, gold)    
         for event in pygame.event.get():
@@ -289,11 +319,15 @@ def main_menu(current_skin):
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mx, my = pygame.mouse.get_pos()
                 if in_skin_menu:
-                    if in_skin_menu:
-                        for skin_name, rect in skin_rects.items():
-                            if rect.collidepoint(mx, my):
+                    for skin_name, rect in skin_rects.items():
+                        if rect.collidepoint(mx, my):
+                            if OWNED.get(skin_name):
                                 current_skin = SKINS[skin_name]
-                                in_skin_menu = False 
+                                in_skin_menu = False
+                            else:
+                                if gold>=PRICE.get(skin_name):
+                                    gold -= PRICE.get(skin_name)
+                                    OWNED[skin_name]=True
                 else:  
                     if skin_rect.collidepoint(mx, my):
                         in_skin_menu=True
