@@ -19,13 +19,13 @@ SKINS = {
 }
 PRICE = {
     "Default":0,
-    "Black":500,
-    "Blue":500,
-    "Green":500,
-    "Orange":500,
-    "Pink":500,
-    "Purple":500,
-    "Red":500,
+    "Black":100,
+    "Blue":200,
+    "Green":200,
+    "Orange":200,
+    "Pink":300,
+    "Purple":300,
+    "Red":300,
 }
 OWNED = {
     "Default":True,
@@ -269,12 +269,12 @@ def draw_window(win, bird, pipes, base, score, max_score,  gold):
 def draw_menu(win,max_score,frame_count, current_skin, gold):
     win.blit(BG_IMG, (0,0))
     
-    play_button = MENU_FONT.render("Play", 1, (255,255,255))
-    exit_button = MENU_FONT.render("Exit", 1, (255,255,255))
+    play_button = pygame.image.load(os.path.join("Flappy_bird\\imgs","Play.png"))
+    exit_button = pygame.image.load(os.path.join("Flappy_bird\\imgs","Exit.png"))
     skin_button = current_skin[frame_count // 10 % len(current_skin)]
 
-    play_rect = play_button.get_rect(center=(WIN_WIDTH/2, WIN_HEIGHT/2 - 100))
-    exit_rect = exit_button.get_rect(center=(WIN_WIDTH/2, WIN_HEIGHT/2 + 100))
+    play_rect = play_button.get_rect(center=(WIN_WIDTH/2, WIN_HEIGHT/2 + 50))
+    exit_rect = exit_button.get_rect(center=(WIN_WIDTH/2, WIN_HEIGHT/2 + 250))
     skin_rect = skin_button.get_rect(topright=(WIN_WIDTH - 30, 30))
 
     win.blit(play_button, play_rect)
