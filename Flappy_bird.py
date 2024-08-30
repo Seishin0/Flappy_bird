@@ -2,6 +2,7 @@ import pygame
 import json
 import os 
 import random
+import sys
 pygame.font.init()
 
 WIN_WIDTH = 550
@@ -315,7 +316,7 @@ def main_menu(current_skin):
                 save(max_score,gold,current_skin)
                 run = False
                 pygame.quit()
-                quit()
+                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mx, my = pygame.mouse.get_pos()
                 if in_skin_menu:
@@ -337,7 +338,7 @@ def main_menu(current_skin):
                     if exit_rect.collidepoint(mx, my):
                         save(max_score,gold,current_skin)
                         pygame.quit()
-                        quit()
+                        sys.exit()
 
 def main(current_skin):
     bird= Bird(200,300,current_skin) #230,300
