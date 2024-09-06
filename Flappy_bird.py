@@ -2,11 +2,12 @@ import pygame
 import json
 import os 
 import random
-import sys
+import sys,time
 pygame.font.init()
 
 WIN_WIDTH = 550
 WIN_HEIGHT = 800
+
 #skins and themes
 SKINS = {
     "Classic":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird1.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird2.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird3.png")))],
@@ -65,10 +66,10 @@ BASES = {
 
 }
 THEMES = {
-    "Classic":pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","theme_classic.png"))),
-    "Sky": pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","theme_sky.png"))),
-    "Hell":pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","theme_hell.png"))) ,
-    "Jungle": pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","theme_jungle.png")))
+    "Classic":pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","theme_classic.png")),
+    "Sky": pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","theme_sky.png")),
+    "Hell":pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","theme_hell.png")) ,
+    "Jungle": pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","theme_jungle.png"))
 }
 GOLD_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","Gold.png")))
 SCORE_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","Score.png")))
@@ -77,6 +78,7 @@ MAXSCORE_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bir
 Points = pygame.font.SysFont("Consolas", 40)
 MENU_FONT = pygame.font.SysFont("Consolas", 70)
 frame_count=0
+
 
 def get_skin_name(current_skin):
     for skin_name, skin_imgs in SKINS.items():
@@ -131,16 +133,16 @@ class Bird:
         self.tick_count=0
         self.height = self.y
     
-    def move(self):
+    def move(self,dt):
         self.tick_count +=1
 
         d = self.vel*self.tick_count+ 1.5*self.tick_count**2
 
         if d>=16:
-            d=16
+            d =16
         if d<0:
             d-=2
-        self.y = self.y + d
+        self.y = self.y + d* dt
 
         if d < 0 or self.y < self.height + 50:
             if self.tilt < self.max_rotation:
@@ -196,8 +198,8 @@ class Pipe:
         self.top = self.height - self.pipe_top.get_height()
         self.bottom = self.height + self.gap
     
-    def move(self):
-        self.x -= self.vel
+    def move(self,dt):
+        self.x -= self.vel *dt
 
     def draw(self,win):
         win.blit(self.pipe_top, (self.x, self.top))
@@ -218,7 +220,6 @@ class Pipe:
         
         return False
 
-
 class Base:
     VEL = 5
 
@@ -229,9 +230,9 @@ class Base:
         self.x1  = 0
         self.x2  = self.Width
 
-    def move(self):
-        self.x1 -= self.VEL
-        self.x2 -= self.VEL
+    def move(self,dt):
+        self.x1 -= self.VEL*dt
+        self.x2 -= self.VEL*dt
 
         if self.x1 + self.Width < 0:
             self.x1  = self.x2 + self.Width
@@ -241,8 +242,6 @@ class Base:
     def draw(self,win):
         win.blit(self.IMG, (self.x1,self.y))
         win.blit(self.IMG, (self.x2,self.y))
-
-
 
 def skin_menu(win,gold,theme):
     win.blit(BACKGROUNDS[theme], (0,0))
@@ -286,7 +285,7 @@ def theme_menu(win,gold,theme):
     theme_rects={}
     for theme_name, theme_img in THEMES.items():
         if OWNED.get(theme_name):
-            theme_button = theme_img
+            theme_button = pygame.transform.scale2x(theme_img)
             theme_text = Points.render(theme_name, 1, (255,255,255))
         else:
             theme_button = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","Lockedtheme.png")))
@@ -339,7 +338,7 @@ def draw_menu(win,max_score,frame_count, current_skin, theme, gold):
     play_rect = play_button.get_rect(center=(WIN_WIDTH/2, WIN_HEIGHT/2 + 100))
     exit_rect = exit_button.get_rect(center=(WIN_WIDTH/2, WIN_HEIGHT/2 + 250))
     skin_rect = skin_button.get_rect(topright=(WIN_WIDTH - 35, 30))
-    theme_rect = theme_button.get_rect(topright=(WIN_WIDTH - 10, 140))
+    theme_rect = theme_button.get_rect(topright=(WIN_WIDTH - 40, 140))
 
     win.blit(play_button, play_rect)
     win.blit(exit_button, exit_rect)
@@ -433,8 +432,12 @@ def main(current_skin,theme):
     score=0
     global max_score
     global gold
+    last_time = time.time()
     run=True
     while run:
+        dt=time.time() - last_time
+        last_time = time.time()
+        dt*=30
         clock.tick(30)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -445,7 +448,7 @@ def main(current_skin,theme):
                 if (event.key == pygame.K_UP) or (event.key == pygame.K_w) or  (event.key == pygame.K_SPACE) :
                     bird.jump()
                 
-        bird.move()
+        bird.move(dt)
         add_pipe = False
         rem = []
         for pipe in pipes:
@@ -457,7 +460,7 @@ def main(current_skin,theme):
                 pipe.passed = True
                 add_pipe = True
 
-            pipe.move()
+            pipe.move(dt)
 
         if add_pipe:
             score+=1
@@ -471,7 +474,7 @@ def main(current_skin,theme):
 
         if bird.y + bird.img.get_height() >=730 or bird.y <0:
             run = False
-        base.move()
+        base.move(dt)
         draw_window(win,bird,pipes, base,score,max_score,theme, gold)
         
         if score>max_score:
