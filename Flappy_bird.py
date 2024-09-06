@@ -10,14 +10,14 @@ WIN_HEIGHT = 800
 
 #skins and themes
 SKINS = {
-    "Classic":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird1.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird2.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird3.png")))],
-    "Black":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird1black.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird2black.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird3black.png")))] ,
-    "Blue":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird1blue.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird2blue.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird3blue.png")))] ,
-    "Green":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird1green.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird2green.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird3green.png")))] ,
-    "Orange":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird1orange.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird2orange.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird3orange.png")))] ,
-    "Pink":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird1pink.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird2pink.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird3pink.png")))] ,
-    "Purple":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird1purple.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird2purple.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird3purple.png")))] ,
-    "Red":[pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird1red.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird2red.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\SKINS","bird3red.png")))] ,
+    "Classic":[pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird1.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird2.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird3.png")))],
+    "Black":[pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird1black.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird2black.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird3black.png")))] ,
+    "Blue":[pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird1blue.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird2blue.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird3blue.png")))] ,
+    "Green":[pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird1green.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird2green.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird3green.png")))] ,
+    "Orange":[pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird1orange.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird2orange.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird3orange.png")))] ,
+    "Pink":[pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird1pink.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird2pink.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird3pink.png")))] ,
+    "Purple":[pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird1purple.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird2purple.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird3purple.png")))] ,
+    "Red":[pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird1red.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird2red.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\SKINS","bird3red.png")))] ,
 }
 PRICE = {
     "Classic":0,
@@ -46,34 +46,34 @@ OWNED = {
     "Jungle":False
 }
 PIPES = {
-    "Classic":pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","pipe.png"))),
-    "Sky": pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","pipe_sky.png"))),
-    "Hell":pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","pipe_hell.png"))) ,
-    "Jungle": pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","pipe_jungle.png")))
+    "Classic":pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\THEMES","pipe.png"))),
+    "Sky": pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\THEMES","pipe_sky.png"))),
+    "Hell":pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\THEMES","pipe_hell.png"))) ,
+    "Jungle": pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\THEMES","pipe_jungle.png")))
 }
 BACKGROUNDS = {
-    "Classic":pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","bg.png"))),
-    "Sky": pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","bg_sky.png"))),
-    "Hell":pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","bg_hell.png"))) ,
-    "Jungle": pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","bg_jungle.png")))
+    "Classic":pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\THEMES","bg.png"))),
+    "Sky": pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\THEMES","bg_sky.png"))),
+    "Hell":pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\THEMES","bg_hell.png"))) ,
+    "Jungle": pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\THEMES","bg_jungle.png")))
 
 }
 BASES = {
-    "Classic":pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","base.png"))),
-    "Sky": pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","base_sky.png"))),
-    "Hell":pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","base_hell.png"))) ,
-    "Jungle": pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","base_jungle.png")))
+    "Classic":pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\THEMES","base.png"))),
+    "Sky": pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\THEMES","base_sky.png"))),
+    "Hell":pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\THEMES","base_hell.png"))) ,
+    "Jungle": pygame.transform.scale2x(pygame.image.load(os.path.join("imgs\\THEMES","base_jungle.png")))
 
 }
 THEMES = {
-    "Classic":pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","theme_classic.png")),
-    "Sky": pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","theme_sky.png")),
-    "Hell":pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","theme_hell.png")) ,
-    "Jungle": pygame.image.load(os.path.join("Flappy_bird\\imgs\\THEMES","theme_jungle.png"))
+    "Classic":pygame.image.load(os.path.join("imgs\\THEMES","theme_classic.png")),
+    "Sky": pygame.image.load(os.path.join("imgs\\THEMES","theme_sky.png")),
+    "Hell":pygame.image.load(os.path.join("imgs\\THEMES","theme_hell.png")) ,
+    "Jungle": pygame.image.load(os.path.join("imgs\\THEMES","theme_jungle.png"))
 }
-GOLD_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","Gold.png")))
-SCORE_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","Score.png")))
-MAXSCORE_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","bestScore.png")))
+GOLD_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","Gold.png")))
+SCORE_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","Score.png")))
+MAXSCORE_IMG=pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","bestScore.png")))
 
 Points = pygame.font.SysFont("Consolas", 40)
 MENU_FONT = pygame.font.SysFont("Consolas", 70)
@@ -86,7 +86,7 @@ def get_skin_name(current_skin):
             return skin_name
     return "Classic" #If found none
 
-def save(max_score , gold, skin, theme, filename="Flappy_bird\\Data.json"):
+def save(max_score , gold, skin, theme, filename="Data.json"):
     skin_name=get_skin_name(skin)
     owned_skins = list(OWNED.values())
     data = {
@@ -99,7 +99,7 @@ def save(max_score , gold, skin, theme, filename="Flappy_bird\\Data.json"):
     with open(filename, 'w') as file:
         json.dump(data, file)
 
-def load(filename="Flappy_bird\\Data.json"):
+def load(filename="Data.json"):
     try:
         with open(filename, 'r') as file:
             data=json.load(file)
@@ -288,7 +288,7 @@ def theme_menu(win,gold,theme):
             theme_button = pygame.transform.scale2x(theme_img)
             theme_text = Points.render(theme_name, 1, (255,255,255))
         else:
-            theme_button = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","Lockedtheme.png")))
+            theme_button = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","Lockedtheme.png")))
             theme_text = Points.render(str(PRICE.get(theme_name)), 1, (255,255,255))
         if count % 2 ==0:
             theme_rect = theme_button.get_rect(center=(WIN_WIDTH/4, y_offset))
@@ -330,8 +330,8 @@ def draw_window(win, bird, pipes, base, score, max_score, theme, gold):
 def draw_menu(win,max_score,frame_count, current_skin, theme, gold):
     win.blit(BACKGROUNDS[theme], (0,0))
     
-    play_button = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","Play.png")))
-    exit_button = pygame.transform.scale2x(pygame.image.load(os.path.join("Flappy_bird\\imgs","Exit.png")))
+    play_button = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","Play.png")))
+    exit_button = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","Exit.png")))
     skin_button = current_skin[frame_count // 10 % len(current_skin)]
     theme_button = THEMES[theme]
 
